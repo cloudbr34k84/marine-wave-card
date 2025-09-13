@@ -39,7 +39,7 @@ const plugins = [
 
 export default [
   {
-    input: 'src/boilerplate-card.ts',
+    input: 'src/marine-wave-card.ts',   // changed here
     output: {
       dir: 'dist',
       format: 'es',

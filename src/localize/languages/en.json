@@ -4,5 +4,11 @@
     "invalid_configuration": "Invalid configuration",
     "show_warning": "Show Warning",
     "show_error": "Show Error"
+  },
+  "card": {
+    "marine_wave": {
+      "name": "Marine Wave Card",
+      "description": "Displays swell and wave height, period, and direction"
+    }
   }
 }

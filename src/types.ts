@@ -2,14 +2,14 @@ import { ActionConfig, LovelaceCard, LovelaceCardConfig, LovelaceCardEditor } fr
 
 declare global {
   interface HTMLElementTagNameMap {
-    'boilerplate-card-editor': LovelaceCardEditor;
+    'marine-wave-card-editor': LovelaceCardEditor;
     'hui-error-card': LovelaceCard;
   }
 }
 
-// TODO Add your configuration elements here for type-checking
-export interface BoilerplateCardConfig extends LovelaceCardConfig {
-  type: string;
+// Configuration options for the Marine Wave Card
+export interface MarineWaveCardConfig extends LovelaceCardConfig {
+  type: 'custom:marine-wave-card';
   name?: string;
   show_warning?: boolean;
   show_error?: boolean;

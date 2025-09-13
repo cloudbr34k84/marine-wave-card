@@ -3,18 +3,18 @@ import { LitElement, html, TemplateResult, css, CSSResultGroup } from 'lit';
 import { HomeAssistant, fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
 
 import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
-import { BoilerplateCardConfig } from './types';
+import { MarineWaveCardConfig } from './types';
 import { customElement, property, state } from 'lit/decorators';
 import { formfieldDefinition } from '../elements/formfield';
 import { selectDefinition } from '../elements/select';
 import { switchDefinition } from '../elements/switch';
 import { textfieldDefinition } from '../elements/textfield';
 
-@customElement('boilerplate-card-editor')
-export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implements LovelaceCardEditor {
+@customElement('marine-wave-card-editor')
+export class MarineWaveCardEditor extends ScopedRegistryHost(LitElement) implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
 
-  @state() private _config?: BoilerplateCardConfig;
+  @state() private _config?: MarineWaveCardConfig;
 
   @state() private _helpers?: any;
 
@@ -27,9 +27,8 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
     ...formfieldDefinition,
   };
 
-  public setConfig(config: BoilerplateCardConfig): void {
+  public setConfig(config: MarineWaveCardConfig): void {
     this._config = config;
-
     this.loadCardHelpers();
   }
 
@@ -37,7 +36,6 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
     if (!this._initialized) {
       this._initialize();
     }
-
     return true;
   }
 
@@ -62,7 +60,6 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
       return html``;
     }
 
-    // You can restrict on domain type
     const entities = Object.keys(this.hass.states);
 
     return html`
@@ -75,9 +72,9 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
         @selected=${this._valueChanged}
         @closed=${(ev) => ev.stopPropagation()}
       >
-        ${entities.map((entity) => {
-          return html`<mwc-list-item .value=${entity}>${entity}</mwc-list-item>`;
-        })}
+        ${entities.map(
+          (entity) => html`<mwc-list-item .value=${entity}>${entity}</mwc-list-item>`
+        )}
       </mwc-select>
       <mwc-textfield
         label="Name (Optional)"
