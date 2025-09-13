@@ -1,119 +1,104 @@
-# Boilerplate Card by [@iantrich](https://www.github.com/iantrich)
 
-A community driven boilerplate of best practices for Home Assistant Lovelace custom cards
+# Marine Wave Card
 
-[![GitHub Release][releases-shield]][releases]
-[![License][license-shield]](LICENSE.md)
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
+A custom Lovelace card for Home Assistant that works alongside the **Open-Meteo Marine Weather integration** to visualize detailed surf and marine conditions.  
 
-![Project Maintenance][maintenance-shield]
-[![GitHub Activity][commits-shield]][commits]
+This card focuses on **wave, swell, and wind** data, giving a clear surf-report style view right inside Home Assistant.
 
-[![Discord][discord-shield]][discord]
-[![Community Forum][forum-shield]][forum]
+---
 
-## Support
+## 🌊 Overview
 
-Hey dude! Help me out for a couple of :beers: or a :coffee:!
+The **Open-Meteo Marine Weather integration** fetches marine forecast and condition data from the Open-Meteo API and exposes it as Home Assistant sensors, such as:
 
-[![coffee](https://www.buymeacoffee.com/assets/img/custom_images/black_img.png)](https://www.buymeacoffee.com/zJtVxUAgH)
+- `swell_wave_height`
+- `swell_wave_period`
+- `swell_wave_direction` (+ direction text)
+- `wave_height`
+- `wind_speed`, `wind_gust`, `wind_direction`
 
-## Options
+While the integration provides **raw sensor values**, the Marine Wave Card turns those values into a **visual surf dashboard** with easy-to-read charts and direction arrows.  
 
-| Name              | Type    | Requirement  | Description                                 | Default             |
-| ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
-| type              | string  | **Required** | `custom:boilerplate-card`                   |
-| name              | string  | **Optional** | Card name                                   | `Boilerplate`       |
-| show_error        | boolean | **Optional** | Show what an error looks like for the card  | `false`             |
-| show_warning      | boolean | **Optional** | Show what a warning looks like for the card | `false`             |
-| entity            | string  | **Optional** | Home Assistant entity ID.                   | `none`              |
-| tap_action        | object  | **Optional** | Action to take on tap                       | `action: more-info` |
-| hold_action       | object  | **Optional** | Action to take on hold                      | `none`              |
-| double_tap_action | object  | **Optional** | Action to take on double tap                | `none`              |
+This makes it possible to go beyond numbers and instantly see:  
+- **How big the waves are**  
+- **How consistent the swell is**  
+- **Where the waves are coming from**  
+- **What the wind is doing**
 
-## Action Options
+---
 
-| Name            | Type   | Requirement  | Description                                                                                                                            | Default     |
-| --------------- | ------ | ------------ | -------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| action          | string | **Required** | Action to perform (more-info, toggle, call-service, navigate url, none)                                                                | `more-info` |
-| navigation_path | string | **Optional** | Path to navigate to (e.g. /lovelace/0/) when action defined as navigate                                                                | `none`      |
-| url             | string | **Optional** | URL to open on click when action is url. The URL will open in a new tab                                                                | `none`      |
-| service         | string | **Optional** | Service to call (e.g. media_player.media_play_pause) when action defined as call-service                                               | `none`      |
-| service_data    | object | **Optional** | Service data to include (e.g. entity_id: media_player.bedroom) when action defined as call-service                                     | `none`      |
-| haptic          | string | **Optional** | Haptic feedback _success, warning, failure, light, medium, heavy, selection_ | `none`      |
-| repeat          | number | **Optional** | How often to repeat the `hold_action` in milliseconds.                                                                                 | `none`       |
+## 🖼️ What the Card Provides
+- **Surf Height (bars):** visualizes swell/wave height as color-coded bars.  
+- **Swell Period:** optional overlay line to show consistency/quality.  
+- **Wind Gusts:** arrows plotted to indicate wind direction, with length/label for speed.  
+- **24h Rolling History:** shows conditions across the last day, with 6-hour tick marks.  
+- **Compact Surf Report Style:** similar to surf forecast websites and apps.  
 
-## Starting a new card from boilerplate-card
+---
 
-### Step 1
+## 🤝 How It Complements the Integration
 
-Click the "Use this template" button on the main page and clone the new repository to your machine
+- **Integration only:** provides **current + forecast values** as numbers and attributes.  
+- **Card only:** transforms those values into **visual, interactive dashboards**.  
 
-### Step 2
+Together they give you:  
+- The **data backend** (integration sensors).  
+- The **visual frontend** (Marine Wave Card).  
 
-Install necessary modules (verified to work in node 8.x)
-`yarn install` or `npm install`
+This combination makes marine/surf conditions easily understandable at a glance, without having to parse raw sensor attributes.
 
-### Step 3
+---
 
-Do a test lint & build on the project. You can see available scripts in the package.json
-`npm run build`
+## 🚀 Installation
 
-### Step 4
+1. **Build the card:**
+   ```bash
+   npm install
+   npm run build
+````
 
-Search the repository for all instances of "TODO" and handle the changes/suggestions
+→ Output: `dist/marine-wave-card.js`
 
-### Step 5
+2. **Copy the built file into Home Assistant:**
 
-Customize to suit your needs and contribute it back to the community
+   ```
+   /config/www/marine-wave-card/marine-wave-card.js
+   ```
 
-## Starting a new card from boilerplate-card with [devcontainer][devcontainer]
+3. **Add the resource in Home Assistant:**
 
-Note: this is available only in vscode ensure you have the [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension installed.
+   * **Settings → Dashboards → Resources → + Add Resource**
+   * URL: `/local/marine-wave-card/marine-wave-card.js`
+   * Type: **JavaScript Module**
 
-1. Fork and clone the repository.
-2. Open a [devcontainer][devcontainer] terminal and run `npm start` when it's ready.
-3. The compiled `.js` file will be accessible on
-   `http://127.0.0.1:5000/boilerplate-card.js`.
-4. On a running Home Assistant installation add this to your Lovelace
-   `resources:`
+   *(YAML alternative):*
 
-```yaml
-- url: 'http://127.0.0.1:5000/boilerplate-card.js'
-  type: module
-```
+   ```yaml
+   lovelace:
+     resources:
+       - url: /local/marine-wave-card/marine-wave-card.js
+         type: module
+   ```
 
-_Change "127.0.0.1" to the IP of your development machine._
+4. **Add the card to a dashboard:**
 
-### Bonus
+   ```yaml
+   type: custom:marine-wave-card
+   entity: sensor.sydney_current  # replace with your marine sensor
+   name: Bondi Surf Report
+   ```
 
-If you need a fresh test instance you can install a fresh Home Assistant instance inside the devcontainer as well.
+5. **Refresh the HA frontend** (Ctrl+Shift+R on desktop).
 
-1. Run the command `container start`.
-2. Home Assistant will install and will eventually be running on port `9123`
+---
 
-## [Troubleshooting](https://github.com/thomasloven/hass-config/wiki/Lovelace-Plugins)
+## 📊 Example View
 
-NB This will not work with node 9.x if you see the following errors try installing node 8.10.0
+![Marine Wave Card Example](docs/example.png)
 
-```yarn install
-yarn install v1.3.2
-[1/4] 🔍  Resolving packages...
-warning rollup-plugin-commonjs@10.1.0: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-commonjs.
-[2/4] 🚚  Fetching packages...
-error @typescript-eslint/eslint-plugin@2.6.0: The engine "node" is incompatible with this module. Expected version "^8.10.0 || ^10.13.0 || >=11.10.1".
-error Found incompatible module
-info Visit https://yarnpkg.com/en/docs/cli/install for documentation about this command.
-```
+---
 
-[commits-shield]: https://img.shields.io/github/commit-activity/y/custom-cards/boilerplate-card.svg?style=for-the-badge
-[commits]: https://github.com/custom-cards/boilerplate-card/commits/master
-[devcontainer]: https://code.visualstudio.com/docs/remote/containers
-[discord]: https://discord.gg/5e9yvq
-[discord-shield]: https://img.shields.io/discord/330944238910963714.svg?style=for-the-badge
-[forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
-[forum]: https://community.home-assistant.io/c/projects/frontend
-[license-shield]: https://img.shields.io/github/license/custom-cards/boilerplate-card.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/maintenance/yes/2021.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/custom-cards/boilerplate-card.svg?style=for-the-badge
-[releases]: https://github.com/custom-cards/boilerplate-card/releases
+## 🔮 Roadmap
+
+See [ROADMAP.md](ROADMAP.md) for detailed planned features including multi-day forecast charts, tide overlays, quality ratings, and more.
+
